@@ -1,0 +1,58 @@
+name: CodeScan Analysis
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+permissions:
+  contents: read
+
+env:
+  SONAR_SCANNER_VERSION: 5.0.1.3006
+  SONAR_SOURCES: force-app/main/default/profiles
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache scanner files
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Run CodeScan on push
+        if: github.event_name == 'push'
+        uses: codescan-io/codescan-scanner-action@cd9694sarif1
+        with:
+          scanChangedFilesOnly: false
+          organization: va-github-actions
+          projectKey: ${{ vars.CODESCAN_PROJECT_KEY }}
+          codeScanUrl: https://preview.codescan.io/
+          login: ${{ secrets.CODESCAN_TOKEN }}
+          args: |
+            sonar.branch.name=${{ github.ref_name }}
+            sonar.sources=${{ env.SONAR_SOURCES }}
+
+      - name: Run CodeScan on pull request
+        if: github.event_name == 'pull_request'
+        uses: codescan-io/codescan-scanner-action@cd9694sarif1
+        with:
+          scanChangedFilesOnly: false
+          organization: va-github-actions
+          projectKey: ${{ vars.CODESCAN_PROJECT_KEY }}
+          codeScanUrl: https://preview.codescan.io/
+          login: ${{ secrets.CODESCAN_TOKEN }}
+          args: |
+            sonar.pullrequest.branch=${{ github.head_ref }}
+            sonar.pullrequest.base=${{ github.base_ref }}
+            sonar.pullrequest.key=${{ github.event.number }}
+            sonar.sources=${{ env.SONAR_SOURCES }}

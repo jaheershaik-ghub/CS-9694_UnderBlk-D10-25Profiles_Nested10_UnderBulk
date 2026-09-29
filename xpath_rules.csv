@@ -1,0 +1,11 @@
+Rule Name,Description,XPath Expression,Expected Matches Per Profile
+DenseFieldReadable,Per-element rule used to reproduce report accumulation.,"//fieldPermissions/readable/text[@Image=""true""]",250
+DenseFieldEditable,Per-element rule used to reproduce report accumulation.,"//fieldPermissions/editable/text[@Image=""true""]",250
+DenseFieldName,Per-element rule used to reproduce report accumulation.,//fieldPermissions/field/text,250
+DenseClassName,Per-element rule used to reproduce report accumulation.,//classAccesses/apexClass/text,250
+DenseClassEnabled,Per-element rule used to reproduce report accumulation.,//classAccesses/enabled/text,250
+DenseLayout,Per-element rule used to reproduce report accumulation.,//layoutAssignments/layout/text,250
+DenseObjectPerm,Per-element rule used to reproduce report accumulation.,//objectPermissions/object/text,250
+DensePageAccess,Per-element rule used to reproduce report accumulation.,//pageAccesses/apexPage/text,250
+DenseRecordType,Per-element rule used to reproduce report accumulation.,//recordTypeVisibilities/recordType/text,250
+DenseUserPerm,Per-element rule used to reproduce report accumulation.,//userPermissions/name/text,250
